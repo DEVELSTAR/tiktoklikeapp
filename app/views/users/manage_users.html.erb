@@ -7,17 +7,30 @@
       <table class="table">
         <thead>
           <tr>
+            <th>Id</th>
+            <th>Name</th>
             <th>Email</th>
             <th>User Type</th>
+            <th>Picture</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <% @users.each do |user| %>
             <tr>
+              <td><%= user.id %></td>
+              <td><%= user.name %></td>
               <td><%= user.email %></td>
               <td><%= user.user_type.capitalize %></td>
               <td>
+                <% if user.picture.attached? %>
+                  <%= image_tag user.picture, class: "rounded-circle", style: "object-fit: cover; height: 50px;" %>
+                <% else %>
+                <%= image_tag "https://via.placeholder.com/150", class: "img-fluid rounded-circle mb-3", style: "height: 50px; width: 50;" %>
+                <% end %>
+              </td>
+              <td>
+                <%= link_to 'View', user_path(user), class: 'btn btn-primary btn-sm' %>
                 <%= link_to 'Edit', edit_user_path(user), class: 'btn btn-warning btn-sm' %>
                 <%= link_to 'Delete', user_path(user), data: { turbo_method: :delete, turbo_confirm: 'Are you sure you want to delete this user?' }, class: 'btn btn-danger btn-sm' %>
               </td>

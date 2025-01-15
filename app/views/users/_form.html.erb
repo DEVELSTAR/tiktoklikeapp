@@ -16,6 +16,16 @@
         <% end %>
 
         <div class="mb-3">
+          <%= form.label :name, class: "form-label" %>
+          <%= form.text_field :name, id: :user_name, class: "form-control", required: true %>
+          <% if @user.errors[:name].any? %>
+            <div class="invalid-feedback">
+              <%= @user.errors[:name].first %>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="mb-3">
           <%= form.label :email, class: "form-label" %>
           <%= form.email_field :email, id: :user_email, class: "form-control", required: true %>
           <% if @user.errors[:email].any? %>
@@ -51,6 +61,16 @@
           <% if @user.errors[:user_type].any? %>
             <div class="invalid-feedback">
               <%= @user.errors[:user_type].first %>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="mb-3">
+          <%= form.label :picture, class: "form-label" %>
+          <%= form.file_field :picture, class: "form-control" %>
+          <% if @user.errors[:picture].any? %>
+            <div class="invalid-feedback">
+              <%= @user.errors[:picture].first %>
             </div>
           <% end %>
         </div>

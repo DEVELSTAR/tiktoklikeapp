@@ -10,6 +10,7 @@ class User < ApplicationRecord
   has_many :replies, dependent: :destroy
   has_many :following, class_name: "Follow", foreign_key: "follower_id", dependent: :destroy
   has_many :followers, class_name: "Follow", foreign_key: "followed_id", dependent: :destroy
+  has_one_attached :picture 
 
   # Role check methods
   def admin?

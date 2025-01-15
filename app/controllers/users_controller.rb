@@ -1,14 +1,17 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :require_admin, only: [:index, :edit, :update, :destroy]
-  before_action :set_user, only: [:edit, :update, :destroy]
+  before_action :set_user, only: [:edit, :update, :destroy, :show]
 
   def manage_users
-    @users = User.all
+    @users = User.order(created_at: :desc)
   end
 
   def index
-    @users = User.all
+    @users = User.order(created_at: :desc)
+  end
+
+  def show
   end
 
   def new
@@ -51,6 +54,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation, :user_type)
+    params.require(:user).permit(:email, :password, :password_confirmation, :user_type, :name, :picture)
   end
 end

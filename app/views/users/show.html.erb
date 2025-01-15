@@ -1,0 +1,30 @@
+<div class="container mt-5">
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <div class="row align-items-center">
+        <!-- User Image -->
+        <div class="col-md-4 text-center mb-4 mb-md-0">
+          <% if @user.picture.attached? %>
+            <%= image_tag @user.picture, class: "img-fluid rounded-circle mb-3", style: "object-fit: cover; height: 170px; width: 170px;" %>
+          <% else %>
+            <%= image_tag "https://via.placeholder.com/150", class: "img-fluid rounded-circle mb-3", style: "height: 170px; width: 170px;" %>
+          <% end %>
+        </div>
+
+        <!-- User Details -->
+        <div class="col-md-8">
+          <h4 class="mb-2"><%= @user.name %></h4>
+          <p class="mb-1"><strong>Email:</strong> <%= @user.email %></p>
+          <p class="mb-1"><strong>User Type:</strong> <%= @user.user_type.capitalize %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="d-flex justify-content-end">
+    <%= link_to 'Edit', edit_user_path(@user), class: 'btn btn-warning btn-sm me-2' %>
+    <%= link_to 'Back', users_path, class: 'btn btn-secondary btn-sm' %>
+  </div>
+</div>

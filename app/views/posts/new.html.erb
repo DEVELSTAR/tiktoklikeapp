@@ -1,25 +1,4 @@
 <div class="container mt-5">
   <h1 class="text-success mb-4">New Post</h1>
-  
-  <%= form_with model: @post, local: true, class: "needs-validation", enctype: "multipart/form-data" do |form| %>
-    <div class="mb-3">
-      <%= form.label :title, class: "form-label" %>
-      <%= form.text_field :title, class: "form-control", placeholder: "Enter title" %>
-    </div>
-
-    <div class="mb-3">
-      <%= form.label :content, class: "form-label" %>
-      <%= form.text_area :content, class: "form-control", placeholder: "Write your content here", rows: 6 %>
-    </div>
-
-    <div class="mb-3">
-      <%= form.label :images, "Upload Images", class: "form-label" %>
-      <%= form.file_field :images, multiple: true, class: "form-control" %>
-    </div>
-
-    <div>
-      <%= form.submit 'Create Post', class: "btn btn-success" %>
-      <%= link_to 'Cancel', dashboard_welcomes_path, class: "btn btn-secondary ms-2" %>
-    </div>
-  <% end %>
+  <%= render 'form' %>
 </div>
