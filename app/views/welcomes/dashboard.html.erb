@@ -1,0 +1,43 @@
+<!-- app/views/dashboard/index.html.erb -->
+<div class="container mt-5">
+  <!-- Heading Section -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <p class="text-muted">Home</p>
+      <h1 class="text-primary mb-4">Of course! Anam is pagal.</h1>
+    </div>
+  </div>
+
+  <!-- Navigation Buttons -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <%= link_to "Contact Us", contact_us_welcomes_path, class: "btn btn-outline-primary me-2" %>
+      <%= link_to "About Us", about_us_welcomes_path, class: "btn btn-outline-secondary me-2" %>
+      <%= link_to "Create a Blog", new_post_path, class: "btn btn-outline-success" %>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- Posts List -->
+  <div class="row">
+    <div class="col-12">
+      <h3 class="mb-4">Your Blog Posts</h3>
+      <ul class="list-group">
+        <% @posts.each do |post| %>
+          <li class="list-group-item d-flex justify-content-between align-items-center mb-3">
+            <div>
+              <h5 class="mb-1">
+                <%= link_to post.title, post, class: "text-decoration-none text-dark" %>
+              </h5>
+              <p class="text-muted mb-0"><%= post.content.truncate(100) %></p>
+            </div>
+            <div>
+              <%= link_to 'Delete', post, class: "btn btn-danger btn-sm", data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' } %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>
