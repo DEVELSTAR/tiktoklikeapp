@@ -2,7 +2,19 @@ class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy, :create_comment]
 
   def index
-    @posts = Post.all.order(created_at: :desc)
+    case params[:filter]
+    when 'my_posts'
+      @posts = current_user.posts.order(created_at: :desc)
+    when 'all'
+      @posts = Post.all.order(created_at: :desc)  # Show all posts
+    else
+      if params[:user_email].present?
+        user = User.find_by(email: params[:user_email])
+        @posts = user ? user.posts.order(created_at: :desc) : Post.none
+      else
+        @posts = Post.all.order(created_at: :desc)  # Default to all posts
+      end
+    end
   end
 
   def show
@@ -39,7 +51,7 @@ class PostsController < ApplicationController
   def create
     @post = current_user.posts.new(post_params)
     if @post.save
-      redirect_to dashboard_welcomes_path, notice: 'Post was successfully created.'
+      redirect_to posts_path, notice: 'Post was successfully created.'
     else
       render :new
     end
@@ -50,7 +62,7 @@ class PostsController < ApplicationController
 
   def update
     if @post.update(post_params)
-      redirect_to dashboard_welcomes_path, notice: 'Post was successfully updated.'
+      redirect_to posts_path, notice: 'Post was successfully updated.'
     else
       render :edit
     end
@@ -74,6 +86,6 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:title, :content)
+    params.require(:post).permit(:title, :content, images: [])
   end
 end

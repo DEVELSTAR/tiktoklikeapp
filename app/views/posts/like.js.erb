@@ -1,0 +1,10 @@
+// This file will update the like button and the like count dynamically
+<% if @liked %>
+  // Update the button to "Unlike" and show the new like count
+  $('#like-button-<%= @post.id %>').text('Unlike');
+  $('#like-count-<%= @post.id %>').text(<%= @post.likes.count %>);
+<% else %>
+  // Update the button to "Like" and show the new like count
+  $('#like-button-<%= @post.id %>').text('Like');
+  $('#like-count-<%= @post.id %>').text(<%= @post.likes.count %>);
+<% end %>

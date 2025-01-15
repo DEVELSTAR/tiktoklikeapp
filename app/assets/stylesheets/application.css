@@ -31,3 +31,41 @@ h1 {
 .list-group-item h5 {
   font-size: 1.2rem;
 }
+
+.card {
+  border: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-img-top {
+  object-fit: cover; /* Ensures the image covers the space */
+  height: 200px; /* Fixed image height */
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.card-text {
+  font-size: 1rem;
+  color: #6c757d;
+}
+
+.card .btn {
+  font-size: 0.875rem;
+}
+
+.form-control-sm {
+  width: auto;
+  display: inline-block;
+}
+.input-group .form-control {
+  max-width: 200px;
+}
+
