@@ -1,0 +1,9 @@
+<h1>Edit Comment</h1>
+
+<%= form_with(model: [@post, @comment], local: true) do |form| %>
+  <div class="mb-3">
+    <%= form.label :content, "Edit Comment", class: "form-label" %>
+    <%= form.text_area :content, class: "form-control", rows: 3, required: true %>
+  </div>
+  <%= form.submit "Update Comment", class: "btn btn-primary" %>
+<% end %>

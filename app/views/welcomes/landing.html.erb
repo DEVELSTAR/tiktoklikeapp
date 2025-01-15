@@ -1,19 +1,22 @@
-<!-- app/views/pages/landing.html.erb -->
 <div class="container text-center mt-5">
-  <h1>Welcome to the Blog App</h1>
-  <p class="lead">Join the community and start sharing your thoughts!</p>
+  <h1 class="display-4 text-primary mb-4">Welcome to the Blog App</h1>
+  <p class="lead text-muted mb-5">Join the community and start sharing your thoughts!</p>
 
-  <!-- Buttons -->
-  <div class="mt-4">
-    <% if user_signed_in? %>
-      <!-- If user is logged in, show log out button -->
-      <%= button_to destroy_user_session_path, method: :delete, class: "btn btn-danger" do %>
-        Log out
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <% if user_signed_in? %>
+        <!-- If user is logged in, show log out button -->
+        <%= button_to destroy_user_session_path, method: :delete, class: "btn btn-danger btn-lg w-100 mb-3" do %>
+          Log out
+        <% end %>
+      <% else %>
+        <!-- If user is not logged in, show login and sign-up buttons -->
+        <%= link_to "Log in", new_user_session_path, class: "btn btn-primary btn-lg w-100 mb-3" %>
+        <%= link_to "Sign up", new_user_registration_path, class: "btn btn-success btn-lg w-100 mb-3" %>
       <% end %>
-    <% else %>
-      <!-- If user is not logged in, show login and sign-up buttons -->
-      <%= link_to "Log in", new_user_session_path, class: "btn btn-primary mr-3" %>
-      <%= link_to "Sign up", new_user_registration_path, class: "btn btn-success" %>
-    <% end %>
+      
+      <%= link_to "Contact Us", contact_us_welcomes_path, class: "btn btn-outline-primary btn-lg w-100 mb-3" %>
+      <%= link_to "About Us", about_us_welcomes_path, class: "btn btn-outline-secondary btn-lg w-100" %>
+    </div>
   </div>
 </div>
