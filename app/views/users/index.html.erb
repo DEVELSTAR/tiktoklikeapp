@@ -1,2 +1,39 @@
-<h1>Users#index</h1>
-<p>Find me in app/views/users/index.html.erb</p>
+<div class="container mt-5">
+  <h1 class="mb-4 text-center text-primary">User List</h1>
+  <% if @users.any? %>
+    <div class="row">
+      <% @users.each do |user| %>
+        <div class="col-md-4 mb-4">
+          <div class="card shadow-sm border-light rounded">
+            <%= link_to user_path(user), class: "text-decoration-none text-dark" do %>
+              <div class="d-flex flex-column align-items-center p-3">
+                <div class="card-img-container mb-3">
+                  <img src="<%= user.picture.attached? ? url_for(user.picture) : 'https://via.placeholder.com/150' %>" 
+                       class="card-img-top rounded-circle" 
+                       alt="Profile Picture" 
+                       style="width: 150px; height: 150px; object-fit: cover;">
+                </div>
+                <div class="card-body text-center">
+                  <h5 class="card-title font-weight-bold text-primary"><%= user.name %></h5>
+                  <p class="card-text text-muted"><%= user.email %></p>
+                  <p class="card-text"><small class="text-muted">Followers: <%= user.followers_count %></small></p>
+                  <p class="card-text"><small class="text-muted">Following: <%= user.following_count %></small></p>
+                  <p class="card-text"><small class="text-muted">Total Posts: <%= user.posts.count %></small></p>
+                  <div class="d-flex justify-content-center mt-3">
+                    <% if current_user.following?(user) %>
+                      <%= link_to "Unfollow", unfollow_user_path(user), data: { turbo_method: :delete }, class: "btn btn-danger btn-sm px-3" %>
+                    <% else %>
+                      <%= link_to "Follow", follow_user_path(user), data: { turbo_method: :post }, class: "btn btn-primary btn-sm px-3" %>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-center text-muted">No users found.</p>
+  <% end %>
+</div>

@@ -6,7 +6,16 @@ class PostsController < ApplicationController
     when 'my_posts'
       @posts = current_user.posts.order(created_at: :desc)
     when 'all'
-      @posts = Post.all.order(created_at: :desc)  # Show all posts
+      @posts = Post.all.order(created_at: :desc)
+    when 'posts_liked_by_me'
+      @posts = Post.joins(:likes).where(likes: { user_id: current_user.id }).order(created_at: :desc)
+    when 'my_posts_liked_by_others'
+      @posts = Post.where(user_id: current_user.id)
+                                       .joins(:likes)
+                                       .where.not(likes: { user_id: current_user.id })
+                                       .order(created_at: :desc)
+    when 'all_liked_posts'
+      @posts = Post.joins(:likes).distinct.order(created_at: :desc)
     else
       if params[:user_email].present?
         user = User.find_by(email: params[:user_email])

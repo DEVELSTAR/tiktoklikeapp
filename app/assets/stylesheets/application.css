@@ -10,7 +10,8 @@
  */
 @import "bootstrap";
 body {
-  background-image: url('https://img.freepik.com/free-photo/romantic-roses-with-copy-space_23-2148393429.jpg');
+  background-image: url('https://images.unsplash.com/photo-1472289065668-ce650ac443d2?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHdlYiUyMGJhY2tncm91bmR8ZW58MHx8MHx8fDA%3D');
+/*  background-image: url('https://img.freepik.com/free-photo/romantic-roses-with-copy-space_23-2148393429.jpg');*/
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -47,6 +48,10 @@ h1 {
   flex-direction: column;
 }
 
+.card-body:hover {
+  background-color: #f5c61b;
+}
+
 .card-title {
   font-size: 1.25rem;
   font-weight: bold;
@@ -68,4 +73,58 @@ h1 {
 .input-group .form-control {
   max-width: 200px;
 }
+
+a {
+  text-decoration: none;
+}
+
+.card-img-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  font-size: 1.25rem;
+}
+
+.card-body {
+  padding: 1.25rem;
+}
+
+.card-text {
+  font-size: 0.875rem;
+}
+
+.card-body p {
+  margin-bottom: 0.5rem;
+}
+
+.btn {
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
 

@@ -39,6 +39,8 @@ Rails.application.routes.draw do
     member do
       patch :deactivate
       patch :activate
+      post :follow
+      delete :unfollow
     end
   end
 end

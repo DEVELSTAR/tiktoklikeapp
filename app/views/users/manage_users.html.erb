@@ -1,13 +1,14 @@
 <div class="container mt-5">
-  <h2 class="text-center">Manage Users</h2>
+  <h2 class="text-center mb-4">Manage Users</h2>
 
   <div class="row mt-4">
     <div class="col-12">
-      <%= link_to 'Create User', new_user_path, class: 'btn btn-success mb-3' %>
-      <table class="table">
-        <thead>
+      <%= link_to 'Create User', new_user_path, class: 'btn btn-primary mb-3' %>
+
+      <table class="table table-bordered table-striped table-hover">
+        <thead class="table-dark text-white">
           <tr>
-            <th>Id</th>
+            <th>#</th>
             <th>Name</th>
             <th>Email</th>
             <th>User Type</th>
@@ -26,18 +27,21 @@
                 <% if user.picture.attached? %>
                   <%= image_tag user.picture, class: "img-fluid rounded-circle mb-3", style: "height: 50px; width: 50px;" %>
                 <% else %>
-                  <%= image_tag "https://via.placeholder.com/150", class: "img-fluid rounded-circle mb-3", style: "height: 50px; width: 50;" %>
+                  <%= image_tag "https://via.placeholder.com/150", class: "img-fluid rounded-circle mb-3", style: "height: 50px; width: 50px;" %>
                 <% end %>
               </td>
               <td>
-                <%= link_to 'View', user_path(user), class: 'btn btn-primary btn-sm' %>
-                <%= link_to 'Edit', edit_user_path(user), class: 'btn btn-warning btn-sm' %>
-                <%= link_to 'Delete', user_path(user), data: { turbo_method: :delete, turbo_confirm: 'Are you sure you want to delete this user?' }, class: 'btn btn-danger btn-sm' %>
-                <% if user.active? %>
-                  <%= link_to 'Deactivate', deactivate_user_path(user), data: { turbo_method: :patch, turbo_confirm: 'Are you sure you want to deactivate this user?' }, class: 'btn btn-warning btn-sm' %>
-                <% else %>
-                  <%= link_to 'Activate', activate_user_path(user), data: { turbo_method: :patch, turbo_confirm: 'Are you sure you want to activate this user?' }, class: 'btn btn-success btn-sm' %>
-                <% end %>
+                <div class="d-flex gap-2">
+                  <%= link_to 'View', user_path(user), class: 'btn btn-primary btn-sm' %>
+                  <%= link_to 'Edit', edit_user_path(user), class: 'btn btn-warning btn-sm' %>
+                  <%= link_to 'Delete', user_path(user), data: { turbo_method: :delete, turbo_confirm: 'Are you sure you want to delete this user?' }, class: 'btn btn-danger btn-sm' %>
+
+                  <% if user.active? %>
+                    <%= link_to 'Deactivate', deactivate_user_path(user), data: { turbo_method: :patch, turbo_confirm: 'Are you sure you want to deactivate this user?' }, class: 'btn btn-warning btn-sm' %>
+                  <% else %>
+                    <%= link_to 'Activate', activate_user_path(user), data: { turbo_method: :patch, turbo_confirm: 'Are you sure you want to activate this user?' }, class: 'btn btn-success btn-sm' %>
+                  <% end %>
+                </div>
               </td>
             </tr>
           <% end %>
@@ -46,3 +50,18 @@
     </div>
   </div>
 </div>
+
+<style>
+  body {
+    background-color: #f8f9fa;
+  }
+  
+  .table {
+    background-color: #f6c100;
+  }
+
+  .btn {
+    font-size: 14px;
+  }
+
+</style>
