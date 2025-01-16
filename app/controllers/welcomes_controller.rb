@@ -1,5 +1,5 @@
 class WelcomesController < ApplicationController
-	skip_before_action :authenticate_user!, only: [:landing]
+	skip_before_action :authenticate_user!, except: [:dashboard]
 
 	def landing
 	end
@@ -12,5 +12,6 @@ class WelcomesController < ApplicationController
 
 	def dashboard
       @posts = Post.order(created_at: :desc)
+      @user = current_user
 	end
 end

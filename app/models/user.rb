@@ -23,5 +23,5 @@ class User < ApplicationRecord
 
   # Validation
   validates :user_type, inclusion: { in: ['admin', 'user'] }
-  validates :email, presence: true, uniqueness: true
+  validates :email, :name, presence: true, uniqueness: true
 end

@@ -5,12 +5,10 @@
   <div class="row justify-content-center">
     <div class="col-md-6">
       <% if user_signed_in? %>
-        <!-- If user is logged in, show log out button -->
         <%= button_to destroy_user_session_path, method: :delete, class: "btn btn-danger btn-lg w-100 mb-3" do %>
           Log out
         <% end %>
       <% else %>
-        <!-- If user is not logged in, show login and sign-up buttons -->
         <%= link_to "Log in", new_user_session_path, class: "btn btn-primary btn-lg w-100 mb-3" %>
         <%= link_to "Sign up", new_user_registration_path, class: "btn btn-success btn-lg w-100 mb-3" %>
       <% end %>

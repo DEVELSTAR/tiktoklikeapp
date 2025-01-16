@@ -13,10 +13,12 @@
             </div>
           <% end %>
         </div>
-        <div class="d-flex justify-content-between mt-3">
-          <button id="prev-image" class="btn btn-secondary" style="display: none;">Previous</button>
-          <button id="next-image" class="btn btn-secondary">Next</button>
-        </div>
+        <% if @post.images.count > 1 %>
+          <div class="d-flex justify-content-between mt-3">
+            <button id="prev-image" class="btn btn-secondary" style="display: none;">Previous</button>
+            <button id="next-image" class="btn btn-secondary">Next</button>
+          </div>
+        <% end %>
       <% else %>
         <%= image_tag "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNNLEL-qmmLeFR1nxJuepFOgPYfnwHR56vcw&s", class: "img-fluid mb-3", style: "max-height: 400px; object-fit: cover; width: auto;" %>
       <% end %>
@@ -38,15 +40,15 @@
 
     <ul class="list-group mt-3">
       <% @post.comments.each do |comment| %>
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-          <div>
-            <strong><%= comment.user.email %>:</strong>
-            <%= comment.content %>
+        <li class="list-group-item d-flex justify-content-between align-items-center" id="comment-<%= comment.id %>" data-comment-id="<%= comment.id %>" data-comment-content="<%= comment.content %>">
+          <div class="comment-content" id="content-<%= comment.id %>">
+            <strong><%= comment.user.name %>:</strong>
+            <span><%= comment.content %></span>
           </div>
 
           <% if comment.user == current_user %>
             <div class="d-flex gap-2">
-              <%= link_to 'Edit', edit_post_comment_path(@post, comment), class: 'btn btn-warning btn-sm' %>
+              <button class="btn btn-warning btn-sm" onclick="editComment(<%= comment.id %>)">Edit</button>
               <%= link_to 'Delete', post_comment_path(@post, comment), data: { turbo_method: :delete, confirm: "Are you sure you want to delete this comment?" }, class: 'btn btn-danger btn-sm' %>
             </div>
           <% end %>
@@ -57,35 +59,38 @@
 </div>
 
 <script>
-  let currentImageIndex = 0;
-  const images = document.querySelectorAll('.image-container');
-  const nextButton = document.getElementById('next-image');
-  const prevButton = document.getElementById('prev-image');
+  function editComment(commentId) {
+    const commentItem = document.getElementById(`comment-${commentId}`);
+    const contentDiv = document.getElementById(`content-${commentId}`);
+    
+    // Access the data attributes
+    const commentContent = commentItem.getAttribute('data-comment-content');
+    const commentUser = commentItem.getAttribute('data-comment-user');
+    
+    // Create the edit form with pre-filled content
+    const editFormHTML = `
+      <form action="/posts/<%= @post.id %>/comments/${commentId}" method="post">
+        <input type="hidden" name="_method" value="patch">
+        <textarea name="comment[content]" class="form-control" rows="3" required>${commentContent}</textarea>
+        <div class="d-flex justify-content-end mt-2">
+          <button type="submit" class="btn btn-primary">Update Comment</button>
+          <button type="button" class="btn btn-secondary ms-2" onclick="cancelEdit(${commentId})">Cancel</button>
+        </div>
+      </form>
+    `;
 
-  function showImage(index) {
-    images.forEach((image, i) => {
-      image.style.display = i === index ? 'block' : 'none';
-    });
-
-    // Show or hide buttons based on index
-    prevButton.style.display = index === 0 ? 'none' : 'inline-block';
-    nextButton.style.display = index === images.length - 1 ? 'none' : 'inline-block';
+    contentDiv.innerHTML = editFormHTML;
   }
 
-  nextButton.addEventListener('click', () => {
-    if (currentImageIndex < images.length - 1) {
-      currentImageIndex++;
-      showImage(currentImageIndex);
-    }
-  });
+  function cancelEdit(commentId) {
+    const contentDiv = document.getElementById(`content-${commentId}`);
+    const commentItem = document.getElementById(`comment-${commentId}`);
+    const commentContent = commentItem.getAttribute('data-comment-content');
 
-  prevButton.addEventListener('click', () => {
-    if (currentImageIndex > 0) {
-      currentImageIndex--;
-      showImage(currentImageIndex);
-    }
-  });
-
-  // Initialize the first image
-  showImage(currentImageIndex);
+    // Reset to the original content
+    contentDiv.innerHTML = `
+      <strong>${commentItem.getAttribute('data-comment-user')}:</strong>
+      <span>${commentContent}</span>
+    `;
+  }
 </script>

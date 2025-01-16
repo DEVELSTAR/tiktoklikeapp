@@ -35,5 +35,10 @@ Rails.application.routes.draw do
       get :manage_users
       post :add_user
     end
+
+    member do
+      patch :deactivate
+      patch :activate
+    end
   end
 end

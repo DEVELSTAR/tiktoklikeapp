@@ -1,6 +1,6 @@
 class CommentsController < ApplicationController
   before_action :set_post
-  before_action :set_comment, only: [:update, :destroy]
+  before_action :set_comment, only: [:update, :destroy, :edit]
 
   def create
     @comment = @post.comments.new(comment_params)
@@ -11,6 +11,9 @@ class CommentsController < ApplicationController
     else
       redirect_to post_path(@post), alert: 'Failed to create comment.'
     end
+  end
+
+  def edit
   end
 
   def update

@@ -12,14 +12,15 @@
 
 # Creating a default admin user
 
-# User.create!(
-#   email: 'admin@example.com',
-#   password: 'password',
-#   password_confirmation: 'password',
-#   user_type: 'admin'
-# )
+User.create!(
+  name: "STAR",
+  email: 'admin@example.com',
+  password: 'password',
+  password_confirmation: 'password',
+  user_type: 'admin'
+)
 
-user = User.third
+user = User.first
 
 10.times do |i|
   Post.create(

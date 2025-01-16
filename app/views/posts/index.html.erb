@@ -3,6 +3,7 @@
     <%= link_to 'All Posts', posts_path(filter: 'all'), class: 'btn btn-outline-primary me-2' %>
     <%= link_to 'My Posts', posts_path(filter: 'my_posts'), class: 'btn btn-outline-primary me-2' %>
     <%= link_to 'Posts by User', posts_path(filter: 'user_posts'), class: 'btn btn-outline-primary me-2' %>
+    <%= link_to "Create a Post", new_post_path, class: "btn btn-primary me-2" %>
   </div>
 
   <div class="row">
@@ -12,7 +13,7 @@
 
           <!-- User email at the top of the post -->
           <div class="card-header">
-            <strong><%= post.user.email %></strong>
+            <strong><%= post.user.name %></strong>
           </div>
 
           <% if post.images.attached? %>
