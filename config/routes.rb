@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       get :contact_us
       get :about_us
       get :dashboard
+      get :clinic
     end
   end
 
@@ -43,4 +44,12 @@ Rails.application.routes.draw do
       delete :unfollow
     end
   end
+
+  resources :doctors do
+    resources :appointments
+  end
+
+  resources :patients
+  resources :appointments
 end
+

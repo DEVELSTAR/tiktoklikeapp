@@ -1,0 +1,15 @@
+<h1 class="text-center my-4"><%= @patient.name %></h1>
+<div class="container">
+  <h3>Doctors:</h3>
+  <ul class="list-group mb-4">
+    <% @doctors.each do |doctor| %>
+      <li class="list-group-item"><%= doctor.name %></li>
+    <% end %>
+  </ul>
+
+  <div class="mt-4">
+    <%= link_to 'Back to Patients', patients_path, class: 'btn btn-secondary' %>
+    <%= link_to 'Edit', edit_patient_path(@patient), class: 'btn btn-warning' %>
+    <%= link_to 'Delete', patient_path(@patient), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+  </div>
+</div>

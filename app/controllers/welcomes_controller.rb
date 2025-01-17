@@ -21,4 +21,8 @@ class WelcomesController < ApplicationController
 	  @posts_liked_by_anyone = Post.joins(:likes).distinct.order(created_at: :desc)
       @all_liked_posts = Post.joins(:likes).distinct.order(created_at: :desc)	  
 	end
+
+	def clinic
+		
+	end
 end

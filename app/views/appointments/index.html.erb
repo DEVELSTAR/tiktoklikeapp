@@ -1,0 +1,23 @@
+<h1 class="text-center my-4">Appointments</h1>
+
+<div class="container">
+  <div class="mb-3">
+    <%= link_to 'All Appointments', appointments_path, class: 'btn btn-secondary' %>
+    <%= link_to 'My Appointments', appointments_path(filter: 'my'), class: 'btn btn-info' %>
+  </div>
+
+  <div class="row">
+    <% @appointments.each do |appointment| %>
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="card-title"><%= appointment.doctor.name %> - <%= appointment.patient.name %></h5>
+            <p class="card-text">Appointment Date: <%= appointment.appointment_date.strftime('%B %d, %Y %I:%M %p') %></p>
+            <p class="card-text">Notes: <%= appointment.notes %></p>
+            <%= link_to 'Delete', doctor_appointment_path(appointment.doctor, appointment), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

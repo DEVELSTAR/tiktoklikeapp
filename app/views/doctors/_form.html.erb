@@ -1,0 +1,28 @@
+<% if @doctor.errors.any? %>
+  <div class="alert alert-danger">
+    <strong>Oh no! Something went wrong:</strong>
+    <ul>
+      <% @doctor.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="container mt-4">
+  <%= form_with model: @doctor, local: true do |form| %>
+    <div class="mb-3">
+      <%= form.label :name, class: 'form-label' %>
+      <%= form.text_field :name, class: 'form-control' %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :specialization, class: 'form-label' %>
+      <%= form.text_field :specialization, class: 'form-control' %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.submit 'Save Doctor', class: 'btn btn-primary btn-lg btn-block' %>
+    </div>
+  <% end %>
+</div>

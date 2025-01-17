@@ -1,0 +1,22 @@
+<h1 class="text-center my-4">New Appointment</h1>
+
+<div class="container">
+  <%= form_with model: @appointment, url: doctor_appointments_path(@doctor), local: true do |form| %>
+    <div class="mb-3">
+      <%= form.label :patient_id, 'Patient', class: "form-label" %>
+      <%= form.collection_select :patient_id, Patient.all, :id, :name, { prompt: "Select a Patient" }, class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :appointment_date, 'Appointment Date', class: "form-label" %>
+      <%= form.datetime_local_field :appointment_date, class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :notes, 'Notes', class: "form-label" %>
+      <%= form.text_area :notes, class: "form-control", rows: 4 %>
+    </div>
+
+    <%= form.submit 'Create Appointment', class: "btn btn-primary btn-lg" %>
+  <% end %>
+</div>
