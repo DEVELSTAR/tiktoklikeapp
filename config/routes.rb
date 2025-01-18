@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       get :about_us
       get :dashboard
       get :clinic
+      get :school
     end
   end
 
@@ -51,5 +52,7 @@ Rails.application.routes.draw do
 
   resources :patients
   resources :appointments
+  resources :courses
+  resources :students  
 end
 

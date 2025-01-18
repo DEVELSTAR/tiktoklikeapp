@@ -23,6 +23,8 @@ class WelcomesController < ApplicationController
 	end
 
 	def clinic
-		
+	end
+
+	def school
 	end
 end

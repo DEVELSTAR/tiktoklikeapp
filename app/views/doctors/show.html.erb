@@ -25,6 +25,6 @@
   <div class="mt-4">
     <%= link_to 'Back to Doctors', doctors_path, class: 'btn btn-secondary' %>
     <%= link_to 'Edit', edit_doctor_path(@doctor), class: 'btn btn-warning' %>
-    <%= link_to 'Delete', doctor_path(@doctor), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+    <%= link_to 'Delete', doctor_path(@doctor), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: 'btn btn-danger' %>
   </div>
 </div>

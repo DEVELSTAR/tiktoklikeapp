@@ -29,3 +29,6 @@
 #     user_id: user.id
 #   )
 # end
+
+Student.create([{ name: 'Alice' }, { name: 'Bob' }])
+Course.create([{ name: 'Math' }, { name: 'Science' }])

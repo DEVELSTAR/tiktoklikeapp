@@ -11,7 +11,7 @@
             <h5 class="card-title"><%= link_to patient.name, patient_path(patient) %></h5>
             <p class="card-text">Appointments: <%= patient.appointments.count %></p>
             <%= link_to 'Edit', edit_patient_path(patient), class: 'btn btn-warning btn-sm' %>
-            <%= link_to 'Delete', patient_path(patient), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm ml-2' %>
+            <%= link_to 'Delete', patient_path(patient), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: 'btn btn-danger btn-sm ml-2' %>
 
             <%= link_to 'Create Appointment', new_appointment_path(patient_id: patient.id), class: 'btn btn-success btn-sm mt-2' %>
           </div>

@@ -11,6 +11,7 @@
     <div class="col-12">
       <%= link_to "Manage Posts", posts_path, class: "btn btn-dark me-2" %>
       <%= link_to "Clinic", clinic_welcomes_path, class: "btn btn-primary me-2" %>
+      <%= link_to "School", school_welcomes_path, class: "btn btn-info me-2" %>
 
       <% if current_user.user? %>
         <%= link_to "Users", users_path, class: "btn btn-secondary me-2" %>
