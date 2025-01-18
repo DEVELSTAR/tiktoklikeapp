@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_18_060520) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_18_091159) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -51,12 +51,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_18_060520) do
   end
 
   create_table "comments", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "post_id", null: false
     t.text "content"
+    t.string "commentable_type", null: false
+    t.integer "commentable_id", null: false
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["post_id"], name: "index_comments_on_post_id"
+    t.integer "parent_id"
+    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
+    t.index ["parent_id"], name: "index_comments_on_parent_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
@@ -152,7 +155,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_18_060520) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "appointments", "doctors"
   add_foreign_key "appointments", "patients"
-  add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
   add_foreign_key "follows", "users", column: "followed_id"
   add_foreign_key "follows", "users", column: "follower_id"

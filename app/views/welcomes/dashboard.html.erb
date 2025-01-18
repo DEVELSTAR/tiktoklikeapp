@@ -1,124 +1,46 @@
 <div class="container mt-5">
   <div class="row mb-4">
-    <div class="col-12">
-      <h1 class="text-primary mb-4">
+    <div class="col-12 text-center">
+      <h1 class="text-primary mb-4 display-4">
         Welcome, <%= current_user.admin? ? "Admin" : current_user.name %>!
       </h1>
+      <p class="lead">Here is an overview of your account and activity.</p>
     </div>
   </div>
 
-  <div class="row mb-4">
-    <div class="col-12">
-      <%= link_to "Manage Posts", posts_path, class: "btn btn-dark me-2" %>
-      <%= link_to "Clinic", clinic_welcomes_path, class: "btn btn-primary me-2" %>
-      <%= link_to "School", school_welcomes_path, class: "btn btn-info me-2" %>
-
-      <% if current_user.user? %>
-        <%= link_to "Users", users_path, class: "btn btn-secondary me-2" %>
-      <% end %>
-
-      <% if current_user.admin? %>
-        <%= link_to "Manage Users", manage_users_users_path, class: "btn btn-warning me-2" %>
-      <% else %>
-        <%= link_to "Edit Profile", edit_user_path(@user), class: "btn btn-primary me-2" %>
-      <% end %>
+  <div class="row mb-4 justify-content-center">
+    <div class="col-auto">
+      <%= link_to "Manage Posts", posts_path, class: "btn btn-dark me-2 mb-2 mb-md-0 shadow-sm btn-lg" %>
+      <%= link_to "Clinic", clinic_welcomes_path, class: "btn btn-primary me-2 mb-2 mb-md-0 shadow-sm btn-lg" %>
+      <%= link_to "School", school_welcomes_path, class: "btn btn-info me-2 mb-2 mb-md-0 shadow-sm btn-lg" %>
     </div>
+    <% if current_user.user? %>
+      <div class="col-auto">
+        <%= link_to "Users", users_path, class: "btn btn-secondary me-2 mb-2 mb-md-0 shadow-sm btn-lg" %>
+      </div>
+    <% end %>
+
+    <% if current_user.admin? %>
+      <div class="col-auto">
+        <%= link_to "Manage Users", manage_users_users_path, class: "btn btn-warning me-2 mb-2 mb-md-0 shadow-sm btn-lg" %>
+      </div>
+    <% else %>
+      <div class="col-auto">
+        <%= link_to "Edit Profile", edit_user_path(@user), class: "btn btn-primary me-2 mb-2 mb-md-0 shadow-sm btn-lg" %>
+      </div>
+    <% end %>
   </div>
 
   <div class="row mb-4">
     <% if current_user.admin? %>
-      <div class="col-md-3 mb-3">
-        <%= link_to posts_path do %>
-          <div class="card text-center h-100 shadow-sm border-primary">
-            <div class="card-body">
-              <h5 class="card-title">Total Posts</h5>
-              <p class="card-text display-4 text-primary"><%= Post.count %></p>
-            </div>
-          </div>
-        <% end %>
-      </div>
-
-      <div class="col-md-3 mb-3">
-        <%= link_to posts_path(filter: 'all_liked_posts') do %>
-          <div class="card text-center h-100 shadow-sm border-success">
-            <div class="card-body">
-              <h5 class="card-title">Liked Posts</h5>
-              <p class="card-text display-4 text-success"><%= @all_liked_posts.count %></p>
-            </div>
-          </div>
-        <% end %>
-      </div>
-
-      <div class="col-md-3 mb-3">
-        <%= link_to users_path do %>
-          <div class="card text-center h-100 shadow-sm border-success">
-            <div class="card-body">
-              <h5 class="card-title">Total Users</h5>
-              <p class="card-text display-4 text-success"><%= User.count %></p>
-            </div>
-          </div>
-        <% end %>
-      </div>
+      <%= render 'admin_cards' %>
     <% else %>
-      <div class="col-md-3 mb-3">
-        <%= link_to posts_path(filter: 'my_posts') do %>
-          <div class="card text-center h-100 shadow-sm border-primary">
-            <div class="card-body">
-              <h5 class="card-title">My Posts</h5>
-              <p class="card-text display-4 text-primary"><%= current_user.posts.count %></p>
-            </div>
-          </div>
-        <% end %>
-      </div>
-
-      <div class="col-md-3 mb-3">
-        <%= link_to posts_path(filter: 'posts_liked_by_me') do %>
-          <div class="card text-center h-100 shadow-sm border-success">
-            <div class="card-body">
-              <h5 class="card-title">I Liked Posts</h5>
-              <p class="card-text display-4 text-success"><%= @posts_liked_by_me.count %></p>
-            </div>
-          </div>
-        <% end %>
-      </div>
-
-      <div class="col-md-3 mb-3">
-        <%= link_to posts_path(filter: 'my_posts_liked_by_others') do %>
-          <div class="card text-center h-100 shadow-sm border-success">
-            <div class="card-body">
-              <h5 class="card-title">My Liked Posts</h5>
-              <p class="card-text display-4 text-success"><%= @my_posts_liked_by_others.count %></p>
-            </div>
-          </div>
-        <% end %>
-      </div>
-
-      <div class="col-md-3 mb-3">
-        <%= link_to users_path(filter: 'my_followers') do %>
-          <div class="card text-center h-100 shadow-sm border-info">
-            <div class="card-body">
-              <h5 class="card-title">Followers</h5>
-              <p class="card-text display-4 text-info"><%= current_user.followers.count %></p>
-            </div>
-          </div>
-        <% end %>
-      </div>
-
-      <div class="col-md-3 mb-3">
-        <%= link_to users_path(filter: 'my_following') do %>
-          <div class="card text-center h-100 shadow-sm border-info">
-            <div class="card-body">
-              <h5 class="card-title">Following</h5>
-              <p class="card-text display-4 text-info"><%= current_user.following.count %></p>
-            </div>
-          </div>
-        <% end %>
-      </div>
+      <%= render 'user_cards' %>
     <% end %>
 
     <div class="col-md-3 mb-3">
       <%= link_to user_path(current_user) do %>
-        <div class="card text-center h-100 shadow-sm border-info">
+        <div class="card text-center h-100 shadow-lg border-info">
           <div class="card-body">
             <h5 class="card-title">Active Sessions</h5>
             <p class="card-text display-4 text-info">5</p>
@@ -130,43 +52,9 @@
 
   <div class="row">
     <% if current_user.admin? %>
-      <!-- Admin Charts -->
-      <div class="col-md-6 mb-4">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title">Posts Trend</h5>
-            <canvas id="postsChart"></canvas>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 mb-4">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title">Users Growth</h5>
-            <canvas id="usersChart"></canvas>
-          </div>
-        </div>
-      </div>
+      <%= render 'admin_charts' %>
     <% else %>
-      <div class="col-md-6 mb-4">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title">Your Posts Over Time</h5>
-            <canvas id="userPostsChart"></canvas>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 mb-4">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title">Your Engagement</h5>
-            <canvas id="engagementChart"></canvas>
-          </div>
-        </div>
-      </div>
+      <%= render 'user_charts' %>
     <% end %>
   </div>
 </div>
-

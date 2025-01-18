@@ -10,11 +10,20 @@ class User < ApplicationRecord
   has_many :replies, dependent: :destroy
   has_many :following, class_name: "Follow", foreign_key: "follower_id", dependent: :destroy
   has_many :followers, class_name: "Follow", foreign_key: "followed_id", dependent: :destroy
-  has_one_attached :picture 
+  has_one_attached :picture, dependent: :destroy
 
   # Validation
   validates :user_type, inclusion: { in: ['admin', 'user'] }
   validates :email, :name, presence: true, uniqueness: true
+
+  # Avatar URL
+  def avatar_url
+    if picture.attached?
+      Rails.application.routes.url_helpers.rails_blob_url(picture, only_path: true)
+    else
+      "/default-avatar.png" # Ensure you have a default avatar image at `app/assets/images/default-avatar.png`
+    end
+  end
 
   def followers_count
     followers.count

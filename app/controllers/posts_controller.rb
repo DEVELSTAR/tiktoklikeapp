@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: [:show, :edit, :update, :destroy, :create_comment]
+  before_action :set_post, only: [:show, :edit, :update, :destroy]
 
   def index
     case params[:filter]
@@ -21,13 +21,15 @@ class PostsController < ApplicationController
         user = User.find_by(email: params[:user_email])
         @posts = user ? user.posts.order(created_at: :desc) : Post.none
       else
-        @posts = Post.all.order(created_at: :desc)  # Default to all posts
+        @posts = Post.all.order(created_at: :desc)
       end
     end
   end
 
   def show
     @comment = Comment.new
+    @post = Post.includes(:comments).find(params[:id])
+    @comments = @post.comments.where(parent_id: nil).order(created_at: :desc)
   end
 
   def like
@@ -39,17 +41,6 @@ class PostsController < ApplicationController
     else
       @like = @post.likes.create(user: current_user)
       redirect_to posts_path, notice: "Post liked successfully."
-    end
-  end
-
-  def create_comment
-    @comment = @post.comments.new(comment_params)
-    @comment.user = current_user
-
-    if @comment.save
-      redirect_to post_path(@post), notice: 'Comment added successfully.'
-    else
-      render :show, alert: 'Failed to add comment.'
     end
   end
 

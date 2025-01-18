@@ -28,7 +28,9 @@ Rails.application.routes.draw do
       post 'like'
       post 'create_comment'
     end
-    resources :comments
+    resources :comments do
+      resources :replies, module: :comments
+    end
   end
 
   # Standard RESTful routes for users

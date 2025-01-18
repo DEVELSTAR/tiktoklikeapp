@@ -127,4 +127,41 @@ a {
   border-color: #dc3545;
 }
 
+/* Avatar Styles */
+.avatar {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+
+.avatar-sm {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+}
+
+/* Comment Section */
+.comment-input textarea {
+  resize: none;
+}
+
+.comment-item,
+.reply-item {
+  border-bottom: 1px solid #e6e6e6;
+  padding-bottom: 15px;
+}
+
+.comment-content {
+  font-size: 14px;
+}
+
+.comment-actions button {
+  font-size: 12px;
+}
+
+.nested-replies {
+  border-left: 2px solid #f1f1f1;
+  padding-left: 15px;
+}
+
 

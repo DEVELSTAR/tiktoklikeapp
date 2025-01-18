@@ -6,10 +6,14 @@ class CommentsController < ApplicationController
     @comment = @post.comments.new(comment_params)
     @comment.user = current_user
 
+    if params[:comment][:parent_id]
+      @comment.parent_id = params[:comment][:parent_id].to_i
+    end
+
     if @comment.save
-      redirect_to post_path(@post), notice: 'Comment was successfully created.'
+      redirect_to @post, notice: 'Comment was successfully created.'
     else
-      redirect_to post_path(@post), alert: 'Failed to create comment.'
+      redirect_to @post, alert: 'There was an error creating the comment.'
     end
   end
 
@@ -24,10 +28,17 @@ class CommentsController < ApplicationController
     end
   end
 
+
   def destroy
-    @comment.destroy
-    redirect_to post_path(@post), notice: 'Comment was successfully deleted.'
+    if @comment.parent_id
+      @comment.destroy
+      redirect_to @post, notice: 'Reply was successfully deleted.'
+    else
+      @comment.destroy
+      redirect_to @post, notice: 'Comment was successfully deleted.'
+    end
   end
+
 
   private
 
@@ -40,6 +51,6 @@ class CommentsController < ApplicationController
   end
 
   def comment_params
-    params.require(:comment).permit(:content)
+    params.require(:comment).permit(:content, :parent_id)
   end
 end

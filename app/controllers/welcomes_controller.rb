@@ -20,6 +20,10 @@ class WelcomesController < ApplicationController
 	                                 .order(created_at: :desc)
 	  @posts_liked_by_anyone = Post.joins(:likes).distinct.order(created_at: :desc)
       @all_liked_posts = Post.joins(:likes).distinct.order(created_at: :desc)	  
+	  @my_comments_count = current_user.comments.where(parent_id: nil).count
+	  @my_reply_count = current_user.comments.where.not(parent_id: nil).count
+	  @comments_count = Comment.where(parent_id: nil).count
+	  @reply_count = Comment.where.not(parent_id: nil).count
 	end
 
 	def clinic

@@ -1,3 +1,9 @@
+<style>
+  .btn {
+    text-decoration: none;
+  }
+</style>
+
 <div class="container mt-5">
   <h1 class="text-primary mb-4 text-center"><%= @post.title %></h1>
 
@@ -28,30 +34,70 @@
   <div class="my-4">
     <h3 class="text-secondary">Comments</h3>
     
-    <%= form_with(model: [@post, @comment], local: true) do |form| %>
-      <div class="mb-3">
-        <%= form.label :content, "Your Comment", class: "form-label" %>
-        <%= form.text_area :content, class: "form-control", rows: 3, required: true %>
-      </div>
-      <div class="d-flex justify-content-end">
-        <%= form.submit "Add Comment", class: "btn btn-primary" %>
-      </div>
-    <% end %>
+    <div class="comment-input d-flex gap-3 mb-4">
+      <%= image_tag current_user.avatar_url || "default-avatar.png", class: "avatar rounded-circle" %>
+      <%= form_with(model: [@post, @comment], local: true, class: "flex-grow-1") do |form| %>
+        <div class="mb-3">
+          <%= form.text_area :content, class: "form-control", rows: 2, placeholder: "Add a comment...", required: true %>
+        </div>
+        <div class="d-flex justify-content-end gap-2">
+          <button type="button" class="btn btn-light btn-sm" onclick="this.form.reset()">Cancel</button>
+          <%= form.submit "Comment", class: "btn btn-primary btn-sm" %>
+        </div>
+      <% end %>
+    </div>
 
-    <ul class="list-group mt-3">
-      <% @post.comments.each do |comment| %>
-        <li class="list-group-item d-flex justify-content-between align-items-center" id="comment-<%= comment.id %>" data-comment-id="<%= comment.id %>" data-comment-content="<%= comment.content %>">
-          <div class="comment-content" id="content-<%= comment.id %>">
-            <strong><%= comment.user.name %>:</strong>
-            <span><%= comment.content %></span>
-          </div>
-
-          <% if comment.user == current_user %>
-            <div class="d-flex gap-2">
-              <button class="btn btn-warning btn-sm" onclick="editComment(<%= comment.id %>)">Edit</button>
-              <%= link_to 'Delete', post_comment_path(@post, comment), data: { turbo_method: :delete, confirm: "Are you sure you want to delete this comment?" }, class: 'btn btn-danger btn-sm' %>
+    <ul class="comment-list list-unstyled">
+      <% @comments.each do |comment| %>
+        <li class="comment-item d-flex gap-3 mb-3">
+          <%= image_tag comment.user.avatar_url || "default-avatar.png", class: "avatar rounded-circle" %>
+          <div class="comment-content flex-grow-1">
+            <div class="d-flex justify-content-between align-items-center">
+              <strong><%= comment.user.name %></strong>
+              <% if comment.user == current_user %>
+                <div class="comment-actions d-flex gap-2">
+                  <%= link_to 'Delete', post_comment_path(@post, comment), data: { turbo_method: :delete, confirm: "Are you sure you want to delete this comment?" }, class: 'btn btn-sm btn-link text-danger' %>
+                </div>
+              <% end %>
             </div>
-          <% end %>
+            <p class="mb-2 text-muted"><%= time_ago_in_words(comment.created_at) %> ago</p>
+            <p id="content-<%= comment.id %>"><%= comment.content %></p>
+            
+            <button class="btn btn-sm btn-link reply-btn" onclick="toggleReplyForm(<%= comment.id %>)">Reply</button>
+            
+            <div class="reply-form mt-2" id="reply-form-<%= comment.id %>" style="display:none;">
+              <%= form_with(model: [@post, comment.replies.build], local: true) do |reply_form| %>
+                <div class="d-flex gap-3">
+                  <%= image_tag current_user.avatar_url || "default-avatar.png", class: "avatar-sm rounded-circle" %>
+                  <div class="flex-grow-1">
+                    <%= reply_form.text_area :content, class: "form-control", rows: 2, placeholder: "Reply to this comment...", required: true %>
+                  </div>
+                </div>
+                <%= reply_form.hidden_field :parent_id, value: comment.id %>
+                <div class="d-flex justify-content-end gap-2 mt-2">
+                  <button type="button" class="btn btn-light btn-sm" onclick="toggleReplyForm(<%= comment.id %>)">Cancel</button>
+                  <%= reply_form.submit "Reply", class: "btn btn-success btn-sm" %>
+                </div>
+              <% end %>
+            </div>
+            <ul class="nested-replies list-unstyled ms-4 mt-3">
+              <% comment.replies.where.not(content: [nil, ""]).order(created_at: :asc).each do |reply| %>
+                <li class="reply-item d-flex gap-3 mb-3">
+                  <%= image_tag(reply.user&.avatar_url, class: "avatar-sm rounded-circle") %>
+                  <div>
+                    <strong><%= reply.user&.name %></strong>
+                    <p class="mb-2 text-muted">
+                      <%= "#{time_ago_in_words(reply.created_at)} ago" %>
+                    </p>
+                    <p><%= reply.content %></p>
+                  </div>
+                  <%= link_to 'Delete', post_comment_path(@post, reply), 
+                             data: { turbo_method: :delete, confirm: "Are you sure you want to delete this reply?" }, 
+                             class: 'btn btn-sm btn-link text-danger' %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
         </li>
       <% end %>
     </ul>
@@ -59,27 +105,9 @@
 </div>
 
 <script>
-  function editComment(commentId) {
-    const commentItem = document.getElementById(`comment-${commentId}`);
-    const contentDiv = document.getElementById(`content-${commentId}`);
-    
-    // Access the data attributes
-    const commentContent = commentItem.getAttribute('data-comment-content');
-    const commentUser = commentItem.getAttribute('data-comment-user');
-    
-    // Create the edit form with pre-filled content
-    const editFormHTML = `
-      <form action="/posts/<%= @post.id %>/comments/${commentId}" method="post">
-        <input type="hidden" name="_method" value="patch">
-        <textarea name="comment[content]" class="form-control" rows="3" required>${commentContent}</textarea>
-        <div class="d-flex justify-content-end mt-2">
-          <button type="submit" class="btn btn-primary">Update Comment</button>
-          <button type="button" class="btn btn-secondary ms-2" onclick="cancelEdit(${commentId})">Cancel</button>
-        </div>
-      </form>
-    `;
-
-    contentDiv.innerHTML = editFormHTML;
+  function toggleReplyForm(commentId) {
+    const replyForm = document.getElementById(`reply-form-${commentId}`);
+    replyForm.style.display = (replyForm.style.display === "none" || replyForm.style.display === "") ? "block" : "none";
   }
 
   function cancelEdit(commentId) {
